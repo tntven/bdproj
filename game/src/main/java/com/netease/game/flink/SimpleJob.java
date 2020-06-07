@@ -44,8 +44,8 @@ public class SimpleJob {
 
         @Override
         public void flatMap(Integer integer, Collector<Integer> collector) throws Exception {
-            collector.collect(integer - 2);
-            collector.collect(integer + 2);
+            collector.collect(integer - 1);
+            collector.collect(integer + 1);
         }
     }
 
