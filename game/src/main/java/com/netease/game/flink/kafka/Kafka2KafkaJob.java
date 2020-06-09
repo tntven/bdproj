@@ -18,6 +18,15 @@ import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
+/**
+ *
+ * 配置样例
+ * --kafka.source.topic kafka-test --kafka.source.group.id test --kafka.source.bootstrap.servers localhost:9092
+ * --kafka.sink.topic kafka-sink --kafka.sink.bootstrap.servers localhost:9092
+ *
+ * 写入Kafka
+ * zcat merged.gz | head -100 | kafka-console-producer.sh --broker-list localhost:9092 --topic kafka-test
+ */
 public class Kafka2KafkaJob {
     public static void main(String[] args) throws Exception {
 
@@ -70,6 +79,8 @@ public class Kafka2KafkaJob {
                 new KafkaSerializationSchema<String>() {
                     @Override
                     public ProducerRecord<byte[], byte[]> serialize(String s, @Nullable Long timestamp) {
+                        // 可以根据元素来发送到不同topic
+                        // return new ProducerRecord<>(getTopicName(s), null, timestamp, null, s.getBytes(StandardCharsets.UTF_8));
                         return new ProducerRecord<>(sinkTopic, null, timestamp, null, s.getBytes(StandardCharsets.UTF_8));
                     }
                 },
